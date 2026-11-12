@@ -6,7 +6,7 @@ def is_empty(txt):
 def positive_num(n):
     try:
         num = int(n)
-        if num > 0:
+        if num >= 0:
             return True ,None
         return False , "must be a positive number"
     except ValueError:
