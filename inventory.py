@@ -39,20 +39,21 @@ def dedcut_units_from_inventory(products):
     prodact_id = int(id)
     quantity = get_input("Enter quantity to reduce:\n",positive_num)
     for p in products:
-        if p["id"] == prodact_id:
+        if p["id"] == int(prodact_id):
             if p["stock"] - int(quantity) < 0:
-                print("Inventory cannot be reduced below zero.")
-                return True
+                show_one_product(p)
+                return False , "Inventory cannot be reduced below zero."
             else:
                 show_one_product(p)
                 p["stock"] -= int(quantity)
                 show_one_product(p)
-                return True
+                return True ,"sub successfully"
+        return False , "not found!!"
 
 #View out-of-stock products
 def show_out_of_stock_products(products):
     for product in products:
-        if product["stock"] > 0:
+        if product["stock"] == 0:
             show_one_product(product)
 
 #View products with low stock
@@ -69,7 +70,7 @@ def run_inventory_menu():
         choice = input("Choose an option:\n")
         match choice:
             case "1":
-                show_all_products(products)
+                show_all_active_products(products)
             case "2":
                 product = search_active_product_by_id(products)
                 print("not found") if not product else show_one_product(product)
@@ -77,8 +78,8 @@ def run_inventory_menu():
                 add_product = add_units_to_inventory(products)
                 print("Added successfully") if add_product else print("not found!!")
             case "4":
-                sub_product = dedcut_units_from_inventory(products)
-                print("sub successfully") if sub_product else print("not found!!")
+                sub_product,msg = dedcut_units_from_inventory(products)
+                print(msg)
             case "5":
                 show_out_of_stock_products(products)
             case "6":

@@ -7,8 +7,9 @@ from validations import is_empty , positive_num
 def add_product(products:list):
     name , category , price , stock = valid_new_product()
     new_id = generate_id(products)
-    new_item ={"id": new_id, "name":name, "category":category, "price":price, "stock":stock, "active": True},
+    new_item ={"id": new_id, "name":name, "category":category, "price":price, "stock":stock, "active": True}
     products.append(new_item)
+    return new_item
     
 def generate_id(products:list):
     return max([product["id"] for product in products]) + 1
@@ -30,7 +31,7 @@ def search_by_name(name,products):
         if n["name"][:len(name)].lower() == name.lower():
             return n
 
-def search_by_category(category,categories):
+def search_by_category(category,products):
     found = []
     for c in products:
         if c["category"].lower() == category.lower():
@@ -52,7 +53,7 @@ def search_product():
                 print("not found") if not prodact else show_one_product(prodact)
             case "3":
                 category = get_input("enter category:\n",is_empty)
-                prodact = search_by_category(category,categories)
+                prodact = search_by_category(category,products)
                 print("not found") if not prodact else show_all_products(prodact)
             case "4":
                 found = True
@@ -66,28 +67,25 @@ def update_product():
     if not found:
         print( "id product not exists!!")
         return False
+    show_one_product(found)
     change = get_input("what do you want to change: (name/categoey/price/active):\n",is_empty)
     if change.lower() == "name":
-        show_one_product(found)
         new_name = get_input("enter new name:\n",is_empty)
         found["name"] = new_name
         show_one_product(found)
         return True
     elif change.lower() == "category":
-        show_one_product(found)
         new_category = get_input("enter new category:\n",is_empty)
         if search_by_category(new_category,categories):
             found["category"] = new_category
             show_one_product(found)
             return True
     elif change.lower() == "price":
-        show_one_product(found)
         new_price = get_input("enter new price\n",positive_num)
         found["price"] = float(new_price)
         show_one_product(found)
         return True
     elif change.lower() == "active":
-        show_one_product(found)
         found["active"] = not found["active"]
         
         show_one_product(found)
@@ -100,11 +98,12 @@ def update_product():
 def delete_product(products:list):
     id = get_input("enter id of product to delete:\n",positive_num)
     found = search_by_id(int(id),products)
+    if not found:
+        return "not found!!"
     show_one_product(found)
     choice = get_input("Are you sure you want to delete? enter (Y/N)\n",is_empty)
     if choice.lower() == "y":
         products.remove(found)
-        print(products)
         return ("Successfully deleted")
     elif choice.lower() == "n":
         return("Cancelled")
@@ -112,13 +111,15 @@ def delete_product(products:list):
         return("invalid choice!!")
 
 def run_products_managment_menu():
-    choice = False
-    while not choice:
+    wanna_exit = False
+    while not wanna_exit:
         show_products_managment_menu()
         choice = input("Choose an option:\n")
         match choice:
             case "1":
-                add_product(products)
+                new_item = add_product(products)
+                show_one_product(new_item)
+                print("Added successfully")
             case "2":
                 show_all_products(products)
             case "3":
@@ -129,6 +130,6 @@ def run_products_managment_menu():
             case "5":
                 print(delete_product(products))
             case "6":
-                choice = True
+                wanna_exit = True
             case _:
                 print("invalid choice")

@@ -3,8 +3,8 @@ import products
 import inventory
 
 def run_main_menu():
-    choice = None
-    while choice != "5":
+    wanna_exit = False
+    while not wanna_exit:
         show_main_menu()
         choice = input("Choose an option:\n")
         match choice:

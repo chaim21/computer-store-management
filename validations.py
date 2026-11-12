@@ -8,12 +8,20 @@ def positive_num(n):
         num = int(n)
         if num >= 0:
             return True ,None
-        return False , "must be a positive number"
+        return False , "must be a positive integer"
     except ValueError:
-        return False , "must be a positive number"
+        return False , "must be a positive integer"
 
 def valid_category(category,categories):
     if category.capitalize() in categories:
         return True , None
     return False , "category not exsits"
 
+def positive_float(n):
+    try:
+        num = float(n)
+        if num > 0:
+            return True, None
+        return False, "must be a positive number"
+    except ValueError:
+        return False, "must be a positive number"
