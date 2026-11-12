@@ -96,9 +96,23 @@ def update_product():
         print("invalid choice!!\n")
         return False
 
+#delete prodact
+def delete_product(products:list):
+    id = get_input("enter id of product to delete:\n",positive_num)
+    found = search_by_id(int(id),products)
+    show_one_product(found)
+    choice = get_input("Are you sure you want to delete? enter (Y/N)\n",is_empty)
+    if choice.lower() == "y":
+        products.remove(found)
+        print(products)
+        return ("Successfully deleted")
+    elif choice.lower() == "n":
+        return("Cancelled")
+    else:
+        return("invalid choice!!")
 def run_products_managment_menu():
-    choice = None
-    while choice != "6":
+    choice = False
+    while not choice:
         show_products_managment_menu()
         choice = input("Choose an option:\n")
         match choice:
@@ -111,3 +125,9 @@ def run_products_managment_menu():
             case "4":
                 if update_product():
                     print("Updated successfully")
+            case "5":
+                print(delete_product(products))
+            case "6":
+                choice = True
+            case _:
+                print("invalid choice")
