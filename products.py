@@ -110,6 +110,7 @@ def delete_product(products:list):
         return("Cancelled")
     else:
         return("invalid choice!!")
+
 def run_products_managment_menu():
     choice = False
     while not choice:

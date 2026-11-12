@@ -29,3 +29,14 @@ def show_products_managment_menu():
 def show_one_product(p:dict):
     print(f'''
 id: {p["id"]} - name: {p["name"]} - category: {p["category"]} - price: {p["price"]} - stock: {p["stock"]} - active: {p["active"]}''')
+
+def show_invetory_menu():
+    print('''
+1. View full inventory
+2. Search for a product in inventory
+3. Add units to inventory
+4. Deduct units from inventory
+5. View out-of-stock products
+6. View products with low stock
+7. Exit
+''')
