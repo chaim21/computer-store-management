@@ -8,6 +8,7 @@ def positive_num(n):
         num = int(n)
         if num > 0:
             return True ,None
+        return False , "must be a positive number"
     except ValueError:
         return False , "must be a positive number"
 

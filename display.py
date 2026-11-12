@@ -28,4 +28,4 @@ def show_products_managment_menu():
 
 def show_one_product(p:dict):
     print(f'''
-id: {p["id"]} - name: {p["name"]} - category: {p["category"]} - price: {p["price"]} - stock: {p["stock"]}''')
+id: {p["id"]} - name: {p["name"]} - category: {p["category"]} - price: {p["price"]} - stock: {p["stock"]} - active: {p["active"]}''')

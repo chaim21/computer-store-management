@@ -1,7 +1,8 @@
 from display import show_products_managment_menu , show_one_product
 from helpers import valid_new_product , get_input
-from data import products
+from data import products , categories
 from validations import is_empty , positive_num
+
 #add new product
 def add_product(products:list):
     name , category , price , stock = valid_new_product()
@@ -25,11 +26,11 @@ def search_by_id(id,products):
             return p
 
 def search_by_name(name,products):
-    for n in name:
+    for n in products:
         if n["name"][:len(name)].lower() == name.lower():
-            return name
+            return n
 
-def search_by_category(category,products):
+def search_by_category(category,categories):
     found = []
     for c in products:
         if c["category"].lower() == category.lower():
@@ -39,7 +40,7 @@ def search_by_category(category,products):
 def search_product():
     found = False
     while not found:
-        choice = input("1: search by id\n2: search by name \n1: search by category\n4: EXIT\nchoose:\n")
+        choice = input("1: search by id\n2: search by name \n3: search by category\n4: EXIT\nchoose:\n")
         match choice:
             case "1":
                 id = get_input("enter id:\n",positive_num)
@@ -51,12 +52,49 @@ def search_product():
                 print("not found") if not prodact else show_one_product(prodact)
             case "3":
                 category = get_input("enter category:\n",is_empty)
-                prodact = search_by_category(category,products)
+                prodact = search_by_category(category,categories)
                 print("not found") if not prodact else show_all_products(prodact)
             case "4":
                 found = True
             case _:
                 print("enter num between (1-3)")
+
+#update prodact
+def update_product():
+    id = get_input("enter id of product:\n",positive_num)
+    found = search_by_id(int(id),products)
+    if not found:
+        print( "id product not exists!!")
+        return False
+    change = get_input("what do you want to change: (name/categoey/price/active):\n",is_empty)
+    if change.lower() == "name":
+        show_one_product(found)
+        new_name = get_input("enter new name:\n",is_empty)
+        found["name"] = new_name
+        show_one_product(found)
+        return True
+    elif change.lower() == "category":
+        show_one_product(found)
+        new_category = get_input("enter new category:\n",is_empty)
+        if search_by_category(new_category,categories):
+            found["category"] = new_category
+            show_one_product(found)
+            return True
+    elif change.lower() == "price":
+        show_one_product(found)
+        new_price = get_input("enter new price\n",positive_num)
+        found["price"] = float(new_price)
+        show_one_product(found)
+        return True
+    elif change.lower() == "active":
+        show_one_product(found)
+        found["active"] = not found["active"]
+        
+        show_one_product(found)
+        return True
+    else:
+        print("invalid choice!!\n")
+        return False
 
 def run_products_managment_menu():
     choice = None
@@ -70,3 +108,6 @@ def run_products_managment_menu():
                 show_all_products(products)
             case "3":
                 search_product()
+            case "4":
+                if update_product():
+                    print("Updated successfully")
