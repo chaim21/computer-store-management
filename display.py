@@ -40,3 +40,9 @@ def show_invetory_menu():
 6. View products with low stock
 7. Exit
 ''')
+
+def show_sales_menu():
+    print('''
+1. New Deal
+2. back to main menu
+''')
